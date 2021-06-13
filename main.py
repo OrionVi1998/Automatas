@@ -6,20 +6,42 @@ terminista y no determinista y, lo haga funcionar como un autómata.
 # PREGUNTAR AL USUARIO
 import sys
 
+class bcolors:
+    FAIL = '\033[91m' #RED
+    RESET = '\033[0m' #RESET COLOR
+
+
+grafo = {}
+estados_iniciales = None
+estados_finales = []
+
+# PREGUNTAR AL USUARIO
 print("¿Su automata es de que tipo? \n"
              + "0. AFD\n"
              + "1. AFND\n"
              + "2. Salir\n")
 opcion_elegida = int(input())
 
-if opcion_elegida == 0:
-    menu_afd()
-elif opcion_elegida == 1:
-    menu_afnd()
-elif opcion_elegida == 2:
-    sys.exit()
-else:
-    print("Seleccione una opcion valida.")
+def menu_afd():
+
+    print("¿Cuáles son sus estados? (separelos con espacios. Por ejemplo: 0 1 2 ...)\n")
+    estados_keys = sorted([input().split(" ")])
+    print("Cuales son sus estados iniciales? (separelos con espacios)\n")
+    estados_inis = sorted([input().split(" ")])
+    print("Cuales son sus estados finales? (separelos con espacios)\n")
+    estados_fin = sorted([input().split(" ")])
+    for estado in estados_keys:
+        print("Defina las transiciones para el estado", estado, "de la siguiente forma: estado_al_que_voy caracter" +
+              ", estado_al_que_voy caracter)=\n")
+        # resultante:
+        # 0: [(1, "a"), (2, "a")],
+        inp_str = input().split(",")
+        transiciones = [(inp_str[0], inp_str[1])]
+        grafo[estado] = transiciones
+
+    print(grafo)
+
+# def menu_afnd():
 
 
 
