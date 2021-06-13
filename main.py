@@ -3,7 +3,6 @@ Consigna: Hacer un programa que acepte los datos de un autómata de
 terminista y no determinista y, lo haga funcionar como un autómata.
 """
 
-# PREGUNTAR AL USUARIO
 import sys
 
 class bcolors:
@@ -43,17 +42,25 @@ def menu_afd():
 
 # def menu_afnd():
 
-
+if opcion_elegida == 0:
+    menu_afd()
+elif opcion_elegida == 1:
+    # menu_afnd()
+    pass
+elif opcion_elegida == 2:
+    sys.exit()
+else:
+    print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
 
 
 #AFD: Comienzo
 
-grafo = {
-    "-e1": [("0", "e2"), ("1", "e3")],
-    "e2": [("1", "*e4")],
-    "e3": [("0", "*e4")],
-    "*e4": [("1", "e2"), ("0", "-e1")]
-}
+# grafo = {
+#     "-e1": [("0", "e2"), ("1", "e3")],
+#     "e2": [("1", "*e4")],
+#     "e3": [("0", "*e4")],
+#     "*e4": [("1", "e2"), ("0", "-e1")]
+# }
 
 palabra = "1010"
 aceptada = False
