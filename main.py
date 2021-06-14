@@ -23,7 +23,11 @@ print("¿Su automata es de que tipo? \n"
              + "0. AFD\n"
              + "1. AFND\n"
              + "2. Salir\n")
-opcion_elegida = int(input())
+try:
+    opcion_elegida = int(input())
+except:
+    print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
+    sys.exit()
 
 
 def menu_automata():
@@ -32,7 +36,7 @@ def menu_automata():
     global grafo
     global palabra
 
-    print("¿Cuáles son sus estados? (Separelos con espacios: 0 1 2...)\n")
+    print("¿Cuáles son sus estados (sin letras)? (Separelos con espacios: 0 1 2...)\n")
     estados_keys = sorted(input().split(" "))
     # metodo para convertir los estados que ingreso el usuario a int
     for index, estado in enumerate(estados_keys):
