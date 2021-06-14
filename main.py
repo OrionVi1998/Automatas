@@ -1,17 +1,12 @@
-"""
-Consigna: Hacer un programa que acepte los datos de un autómata de
-terminista y no determinista y, lo haga funcionar como un autómata.
-"""
-
 import sys
+import time
+
 from afd import afd
 from afnd import afnd
-
 
 class bcolors:
     FAIL = '\033[91m' #RED
     RESET = '\033[0m' #RESET COLOR
-
 
 grafo = {}
 estado_inicial = None
@@ -19,17 +14,18 @@ estados_finales = []
 palabra = ""
 
 # PREGUNTAR AL USUARIO
-print("¿Su automata es de que tipo? \n"
-             + "0. AFD\n"
-             + "1. AFND\n"
-             + "2. Salir\n")
-try:
-    opcion_elegida = int(input())
-except:
-    print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
-    sys.exit()
+print("¿Su autómata es de que tipo? \n" + "0. AFD\n" + "1. AFND\n" + "2. Salir\n")
 
+valido = False
+while not valido:
+    try:
+        opcion_elegida = int(input("Ingrese aquí: "))
+        if opcion_elegida >= 0 and opcion_elegida <= 2:
+            valido = True
+    except:
+        print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
 
+# MENU PARA INGRESAR DATOS DEL AUTOMATA
 def menu_automata():
     global estados_finales
     global estado_inicial
@@ -85,7 +81,7 @@ def menu_automata():
     for element in grafo:
         print(element, grafo[element])
 
-
+# UTILIZACION DEL ALGORITMO AFD Y/O AFND
 while opcion_elegida != 2:
 
     if opcion_elegida == 0:
@@ -126,17 +122,9 @@ while opcion_elegida != 2:
 
     print("\n")
 
-
-try:
-    import win32api, win32con
-    respuesta = win32api.MessageBox(0, "¿Está seguro de que desea salir del programa?", "Salir",
-                                    win32con.MB_YESNO | win32con.MB_ICONQUESTION)
-    if respuesta == win32con.IDYES:
-        quit()
-    else:
-        print(f"{bcolors.FAIL}Aguarde...{bcolors.RESET}\n")
-
-except:
-    print("Esta computadora no cuenta con Windows.")
+if opcion_elegida == 2:
+    print(f"{bcolors.FAIL}Saliendo...{bcolors.RESET}\n")
+    time.sleep(1)
     sys.exit()
+
 

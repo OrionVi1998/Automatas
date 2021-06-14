@@ -1,40 +1,14 @@
-
 import sys
-
 
 def LINE():
     return sys._getframe(1).f_lineno
-
-
-# grafo = {
-#     0: [(0, "a"), (0, "b"), (1, "a")],
-#     1: [(2, "b")],
-#     2: [(3, "b")],
-#     3: []
-# }
-
-# grafo = {
-#     0: [(1, "a"), (2, "a")],
-#     1: [(3, "b")],
-#     2: [(5, "b")],
-#     3: [(4, "a")],
-#     4: [(1, "b")],
-#     5: [(2, "a")]
-# }
-
-estado_inicial = 0
-# estados_finales = [1, 2]
-# ramificaciones = []
 
 def afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcaciones, ramificaciones):
 
     cola = [estado_inicial]
 
     while len(cola) > 0:
-        # print("cola:", cola)
-        # print("visitados:", visitados)
         estado_actual = cola.pop(0)
-        # print("estado actual:", estado_actual)
 
         if palabra:
             char = palabra[0]
@@ -42,15 +16,14 @@ def afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcacion
             break
 
         print("estado actual:", estado_actual, "y char:", char)
-        # print("caracter:", char)
 
         vecinos = [tupla[0] for tupla in grafo.get(estado_actual) if tupla[1] == char]
-        # si no hay vecinos
+        # Si no hay vecinos
         if not vecinos:
             return
 
         if len(vecinos) > 1:
-            # metodo rapido para insertar todos los vecinos en bifurcaciones
+            # Metodo rapido para insertar todos los vecinos en bifurcaciones
             for e in vecinos:
                 if e not in bifurcaciones:
                     bifurcaciones.append(e)
@@ -64,10 +37,7 @@ def afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcacion
                 print("FIN RAMIFICACION")
 
         else:
-            # print("vecinos:", vecinos)
-
             for estado in vecinos:
-                # print("linea:", LINE(), "cola:", cola, "visitados:", visitados)
                 if estado not in visitados and palabra:
                     visitados.append(estado)
                     cola.append(estado)
@@ -81,15 +51,5 @@ def afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcacion
 
     else:
         return False
-
-
-
-# afnd(estado_inicial, "aba")
-# print("<-- FIN ALGORITMO -->\n")
-# if any(ramificaciones):
-#     print("Resultado: cadena aceptada")
-# else:
-#     print("Resultado: cadena rechazada")
-
 
 
