@@ -32,6 +32,10 @@ def menu_automata():
     global grafo
     global palabra
 
+    print("¿Cuál es su alfabeto? (Separelos con espacios: a b c...)\n")
+    alfabeto = input()
+    alfabeto = [i.strip() for i in alfabeto.split(" ")]
+
     print("¿Cuáles son sus estados (sin letras)? (Separelos con espacios: 0 1 2...)\n")
     estados_keys = sorted(input().split(" "))
     # metodo para convertir los estados que ingreso el usuario a int
@@ -57,8 +61,6 @@ def menu_automata():
     for index, estado in enumerate(estados_keys):
         print("Defina las transiciones para el estado", estado, "de la siguiente forma: estado_al_que_voy,caracter " +
               "__espacio__ estado_al_que_voy,caracter: \n")
-        # resultante:
-        # 0: [(1, "a"), (2, "a")],
         inp_str = input()
         # print(inp_str)
         transiciones = []
@@ -70,6 +72,11 @@ def menu_automata():
                 tupla[0] = int(tupla[0])
                 # quiero convertir el segundo elemento a STR
                 tupla[1] = str(tupla[1])
+                for i in alfabeto:
+                    if tupla[1] not in alfabeto:
+                        print(f"{bcolors.FAIL}ERROR: La transición ingresada no se encuentra en el alfabeto.{bcolors.RESET}")
+                        break
+
                 transiciones.append(tuple(tupla))
             else:
                 pass
