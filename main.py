@@ -10,9 +10,7 @@ class bcolors:
     RESET = '\033[0m' #RESET COLOR
 
 
-grafo = {}
-estados_iniciales = None
-estados_finales = []
+
 
 # PREGUNTAR AL USUARIO
 print("¿Su automata es de que tipo? \n"
@@ -21,143 +19,78 @@ print("¿Su automata es de que tipo? \n"
              + "2. Salir\n")
 opcion_elegida = int(input())
 
-def menu_afd():
 
-    print("¿Cuáles son sus estados? (separelos con espacios. Por ejemplo: 0 1 2 ...)\n")
-    estados_keys = sorted([input().split(" ")])
-    print("Cuales son sus estados iniciales? (separelos con espacios)\n")
-    estados_inis = sorted([input().split(" ")])
-    print("Cuales son sus estados finales? (separelos con espacios)\n")
+def menu_automata(estado_inicl, estados_fin, g):
+
+    print("¿Cuáles son sus estados? (Separelos con espacios: 0 1 2...)\n")
+    estados_keys = sorted(input().split(" "))
+    # metodo para convertir los estados que ingreso el usuario a int
+    for index, estado in enumerate(estados_keys):
+        estados_keys[index] = int(estado)
+    # print(estados_keys)
+
+    print("¿Cuál es su estado inicial? \n")
+    estado_inicl = int(input())
+    print("¿Cuáles son sus estados finales? (separelos con espacios: 0 1 2...)\n")
     estados_fin = sorted([input().split(" ")])
-    for estado in estados_keys:
-        print("Defina las transiciones para el estado", estado, "de la siguiente forma: estado_al_que_voy caracter" +
-              ", estado_al_que_voy caracter)=\n")
+    for index, estado in enumerate(estados_keys):
+        print("Defina las transiciones para el estado", estado, "de la siguiente forma: estado_al_que_voy,caracter" +
+              "__espacio__ estado_al_que_voy,caracter: \n")
         # resultante:
         # 0: [(1, "a"), (2, "a")],
-        inp_str = input().split(",")
-        transiciones = [(inp_str[0], inp_str[1])]
-        grafo[estado] = transiciones
+        inp_str = input().split(" ")
+        # print(inp_str)
+        transiciones = []
+        for tupla in inp_str:
+            if (len(inp_str) > 0):
+                # print("antes de append:", tupla)
+                tupla = tupla.split(",")
+                # quiero convertir el primer elemento a INT
+                tupla[0] = int(tupla[0])
+                # quiero convertir el segundo elemento a STR
+                tupla[1] = str(tupla[1])
+                transiciones.append(tuple(tupla))
+            else:
+                pass
 
-    print(grafo)
+        # print(transiciones)
+        g[index] = transiciones
 
-# def menu_afnd():
+    print("grafo:")
+    for element in g:
+        print(element, g[element])
+
+
+grafo = {}
+estado_inicial = None
+estados_finales = []
 
 if opcion_elegida == 0:
-    menu_afd()
+    menu_automata(estado_inicial, estados_finales, grafo)
+    print(estado_inicial)
+    # afd(estado_inicial, )
 elif opcion_elegida == 1:
-    # menu_afnd()
-    pass
+    menu_automata(estado_inicial, estados_finales, grafo)
+    # afnd()
 elif opcion_elegida == 2:
     sys.exit()
 else:
     print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
 
 
-#AFD: Comienzo
-
-# grafo = {
-#     "-e1": [("0", "e2"), ("1", "e3")],
-#     "e2": [("1", "*e4")],
-#     "e3": [("0", "*e4")],
-#     "*e4": [("1", "e2"), ("0", "-e1")]
-# }
-
-palabra = "1010"
-aceptada = False
-nodoActual = "-e1"
-
-# (mientras la palabra no sea vacia) y (podemos seguir avanzando por las transiciones del nodoActual por el simbolo)
-while len(palabra) > 0 and any([t[0] == palabra[0] for t in grafo[nodoActual]]):
-
-    simbolo = palabra[0]
-
-    for trans in grafo[nodoActual]:
-        if simbolo == trans[0]:
-            nodoActual = trans[1]
-            palabra = palabra[1:]
-            print(palabra, nodoActual, trans)
+# AFD: Comienzo
 
 
-if nodoActual[0] == "*":
-    aceptada = True
-    print(aceptada, ", palabra aceptada.")
-else:
-    print(aceptada, ", palabra no aceptada.")
-
-#AFD: Fin
 
 
-#AFND: Comienzo
-
-estado_inicial = 0
-estados_finales = [1, 2]
-ramificaciones = []
-
-print("<-- INICIO ALGORTIMO -->\n")
-def afnd(estado_inicial, palabra):
-
-    cola = [estado_inicial]
-    visitados = []
-    bifurcaciones = []
-
-    while len(cola) > 0:
-        # print("cola:", cola)
-        # print("visitados:", visitados)
-        estado_actual = cola.pop(0)
-        # print("estado actual:", estado_actual)
-
-        if palabra:
-            char = palabra[0]
-        elif not palabra:
-            break
-
-        print("estado actual:", estado_actual, "y char:", char)
-        # print("caracter:", char)
-
-        vecinos = [tupla[0] for tupla in grafo.get(estado_actual) if tupla[1] == char]
-        # si no hay vecinos
-        if not vecinos:
-            return
-
-        if len(vecinos) > 1:
-            # metodo rapido para insertar todos los vecinos en bifurcaciones
-            for e in vecinos:
-                bifurcaciones.append(e)
-
-            print("bifurcaciones por", char, "-->", bifurcaciones)
-            for estado in bifurcaciones:
-                print("INICIO RAMIFICACION POR ESTADO:", estado)
-                ramificacion = afnd(estado, palabra[1:])
-                ramificaciones.append(ramificacion)
-                print("ramificacion:", ramificacion)
-                print("FIN RAMIFICACION")
+# AFD: Fin
 
 
-        else:
-            # print("vecinos:", vecinos)
-
-            for estado in vecinos:
-                # print("linea:", LINE(), "cola:", cola, "visitados:", visitados)
-                if estado not in visitados and palabra:
-                    visitados.append(estado)
-                    cola.append(estado)
-                if estado in visitados and palabra:
-                    return afnd(estado, palabra[1:])
-
-            palabra = palabra[1:]
-
-    if (not palabra and estado_actual not in estados_finales) or palabra:
-        return False
-
-    elif not palabra and estado_actual in estados_finales:
-        return True
+# AFND: Comienzo
 
 
-afnd(estado_inicial, "aba")
-print("<-- FIN ALGORITMO -->\n")
-if any(ramificaciones):
-    print("Resultado: cadena aceptada")
-else:
-    print("Resultado: cadena rechazada")
+
+
+# AFND: Fin
 
 
