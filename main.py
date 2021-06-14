@@ -4,13 +4,19 @@ terminista y no determinista y, lo haga funcionar como un autómata.
 """
 
 import sys
+from afd import afd
+from afnd import afnd
+
 
 class bcolors:
     FAIL = '\033[91m' #RED
     RESET = '\033[0m' #RESET COLOR
 
 
-
+grafo = {}
+estado_inicial = None
+estados_finales = []
+palabra = ""
 
 # PREGUNTAR AL USUARIO
 print("¿Su automata es de que tipo? \n"
@@ -20,28 +26,43 @@ print("¿Su automata es de que tipo? \n"
 opcion_elegida = int(input())
 
 
-def menu_automata(estado_inicl, estados_fin, g):
+def menu_automata():
+    global estados_finales
+    global estado_inicial
+    global grafo
+    global palabra
 
     print("¿Cuáles son sus estados? (Separelos con espacios: 0 1 2...)\n")
     estados_keys = sorted(input().split(" "))
     # metodo para convertir los estados que ingreso el usuario a int
     for index, estado in enumerate(estados_keys):
         estados_keys[index] = int(estado)
-    # print(estados_keys)
 
     print("¿Cuál es su estado inicial? \n")
-    estado_inicl = int(input())
+    estado_inicial = input()
+    while len(estado_inicial) == 0:
+        estado_inicial = input(f"{bcolors.FAIL}No es posible no tener un estado inicial. Por favor ingrese uno: {bcolors.RESET}")
+    estado_inicial = int(estado_inicial)
+
     print("¿Cuáles son sus estados finales? (separelos con espacios: 0 1 2...)\n")
-    estados_fin = sorted([input().split(" ")])
+    # como input() es tomado como string, necesitamos convertir los estados a int
+    finales = input()
+    while len(finales) == 0:
+        finales = input(f"{bcolors.FAIL}No es posible no tener estados finales. Por favor ingrese (al menos) uno: {bcolors.RESET}")
+
+    for estado_final in finales.split(" "):
+        estado_final = int(estado_final)
+        estados_finales.append(estado_final)
+
     for index, estado in enumerate(estados_keys):
-        print("Defina las transiciones para el estado", estado, "de la siguiente forma: estado_al_que_voy,caracter" +
+        print("Defina las transiciones para el estado", estado, "de la siguiente forma: estado_al_que_voy,caracter " +
               "__espacio__ estado_al_que_voy,caracter: \n")
         # resultante:
         # 0: [(1, "a"), (2, "a")],
-        inp_str = input().split(" ")
+        inp_str = input()
         # print(inp_str)
         transiciones = []
-        for tupla in inp_str:
+        for tupla in inp_str.split(" "):
             if (len(inp_str) > 0):
                 # print("antes de append:", tupla)
                 tupla = tupla.split(",")
@@ -54,43 +75,64 @@ def menu_automata(estado_inicl, estados_fin, g):
                 pass
 
         # print(transiciones)
-        g[index] = transiciones
+        grafo[index] = transiciones
 
-    print("grafo:")
-    for element in g:
-        print(element, g[element])
+    print("\ngrafo:")
+    for element in grafo:
+        print(element, grafo[element])
 
 
-grafo = {}
-estado_inicial = None
-estados_finales = []
+while opcion_elegida != 2:
 
-if opcion_elegida == 0:
-    menu_automata(estado_inicial, estados_finales, grafo)
-    print(estado_inicial)
-    # afd(estado_inicial, )
-elif opcion_elegida == 1:
-    menu_automata(estado_inicial, estados_finales, grafo)
-    # afnd()
-elif opcion_elegida == 2:
+    if opcion_elegida == 0:
+        menu_automata()
+        salir = False
+        while not salir:
+            palabra = input("Ingrese la palabra a evaluar: ")
+            afd(grafo, estado_inicial, estados_finales, palabra)
+
+            respuesta = input(f"{bcolors.FAIL}¿Quieres volver a correr el programa? (Si/No): {bcolors.RESET}")
+            if respuesta.lower("no"):
+                salir = True
+
+    elif opcion_elegida == 1:
+        menu_automata()
+        salir = False
+        while not salir:
+            palabra = input("Ingrese la palabra a evaluar:")
+            # variables que necesitamos para el algoritmo del afnd
+            ramificaciones = []
+            visitados = []
+            bifurcaciones = []
+
+            print("<-- INICIO ALGORTIMO -->\n")
+            afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcaciones, ramificaciones)
+            print("<-- FIN ALGORITMO -->\n")
+            if any(ramificaciones):
+                print("Resultado: cadena aceptada\n")
+            else:
+                print("Resultado: cadena rechazada\n")
+
+            respuesta = input(f"{bcolors.FAIL}¿Quieres volver a correr el programa? (Si/No): {bcolors.RESET}")
+            if respuesta.lower("no"):
+                salir = True
+
+    else:
+        print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
+
+    print("\n")
+
+
+try:
+    import win32api, win32con
+    respuesta = win32api.MessageBox(0, "¿Está seguro de que desea salir del programa?", "Salir",
+                                    win32con.MB_YESNO | win32con.MB_ICONQUESTION)
+    if respuesta == win32con.IDYES:
+        quit()
+    else:
+        print(f"{bcolors.FAIL}Aguarde...{bcolors.RESET}\n")
+
+except:
+    print("Esta computadora no cuenta con Windows.")
     sys.exit()
-else:
-    print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
-
-
-# AFD: Comienzo
-
-
-
-
-# AFD: Fin
-
-
-# AFND: Comienzo
-
-
-
-
-# AFND: Fin
-
 
