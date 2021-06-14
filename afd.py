@@ -1,15 +1,15 @@
+#
+# grafo = {
+#     1: [(2, "0"), (3, "1")],
+#     2: [(4, "1")],
+#     3: [(4, "0")],
+#     4: [(2, "1"), (1, "0")]
+# }
 
-grafo = {
-    1: [(2, "0"), (3, "1")],
-    2: [(4, "1")],
-    3: [(4, "0")],
-    4: [(2, "1"), (1, "0")]
-}
+# estado_inicial = 1
+# estados_finales = [4]
 
-estados_iniciales = 1
-estados_finales = [4]
-
-def afd(nodo_inicial, palabra):
+def afd(grafo, nodo_inicial, estados_finales, palabra):
 
     estado_actual = nodo_inicial
     aceptada = False
@@ -30,8 +30,4 @@ def afd(nodo_inicial, palabra):
         print(aceptada, ", palabra aceptada.")
     else:
         print(aceptada, ", palabra no aceptada.")
-
-
-afd(estados_iniciales, "01")
-
 
