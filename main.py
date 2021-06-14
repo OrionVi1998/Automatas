@@ -99,8 +99,17 @@ while opcion_elegida != 2:
             afd(grafo, estado_inicial, estados_finales, palabra)
 
             respuesta = input(f"{bcolors.FAIL}¿Quieres volver a correr el programa? (Si/No): {bcolors.RESET}")
-            if respuesta.lower("no"):
-                salir = True
+            if respuesta == "si":
+                salir = False
+                print(f"{bcolors.FAIL}Aguarde...{bcolors.RESET}\n")
+                time.sleep(1)
+            elif respuesta == "no":
+                print(f"{bcolors.FAIL}Saliendo...{bcolors.RESET}\n")
+                time.sleep(1)
+                sys.exit()
+            else:
+                salir = False
+                print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}\n")
 
     elif opcion_elegida == 1:
         menu_automata()
@@ -112,17 +121,25 @@ while opcion_elegida != 2:
             visitados = []
             bifurcaciones = []
 
-            print("<-- INICIO ALGORTIMO -->\n")
             afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcaciones, ramificaciones)
-            print("<-- FIN ALGORITMO -->\n")
+
             if any(ramificaciones):
                 print("Resultado: cadena aceptada\n")
             else:
                 print("Resultado: cadena rechazada\n")
 
             respuesta = input(f"{bcolors.FAIL}¿Quieres volver a correr el programa? (Si/No): {bcolors.RESET}")
-            if respuesta.lower("no"):
-                salir = True
+            if respuesta == "si":
+                salir = False
+                print(f"{bcolors.FAIL}Aguarde...{bcolors.RESET}\n")
+                time.sleep(1)
+            elif respuesta == "no":
+                print(f"{bcolors.FAIL}Saliendo...{bcolors.RESET}\n")
+                time.sleep(1)
+                sys.exit()
+            else:
+                salir = False
+                print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}\n")
 
     else:
         print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
