@@ -14,7 +14,7 @@ estados_finales = []
 palabra = ""
 
 # PREGUNTAR AL USUARIO
-print("¿Su autómata es de que tipo? \n" + "0. AFD\n" + "1. AFND\n" + "2. Salir\n")
+print("¿Su autómata es de qué tipo? \n" + "0. AFD\n" + "1. AFND\n" + "2. Salir\n")
 
 valido = False
 while not valido:
