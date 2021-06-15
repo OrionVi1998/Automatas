@@ -5,8 +5,9 @@ from afd import afd
 from afnd import afnd
 
 class bcolors:
-    FAIL = '\033[91m' #RED
-    RESET = '\033[0m' #RESET COLOR
+    FAIL = '\033[91m'
+    RESET = '\033[0m'
+    OKBLUE = '\033[94m'
 
 grafo = {}
 estado_inicial = None
@@ -14,7 +15,7 @@ estados_finales = []
 palabra = ""
 
 # PREGUNTAR AL USUARIO
-print("¿Su autómata es de que tipo? \n" + "0. AFD\n" + "1. AFND\n" + "2. Salir\n")
+print("¿Su autómata es de qué tipo? \n" + "0. AFD\n" + "1. AFND\n" + "2. Salir\n")
 
 valido = False
 while not valido:
