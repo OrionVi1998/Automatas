@@ -47,8 +47,3 @@ def afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcacion
 
     else:
         return False
-
-    else:
-        return False
-
-
