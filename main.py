@@ -61,7 +61,7 @@ def menu_automata():
         estado_final = int(estado_final)
         estados_finales.append(estado_final)
 
-    for index, estado in enumerate(estados_keys):
+    for estado in estados_keys:
         print("Defina las transiciones para el estado", estado, "de la siguiente forma: estado_al_que_voy,caracter " +
               "__espacio__ estado_al_que_voy,caracter: \n")
         inp_str = input()
@@ -85,7 +85,7 @@ def menu_automata():
                 pass
 
         # print(transiciones)
-        grafo[index] = transiciones
+        grafo[estado] = transiciones
 
     print("\ngrafo:")
     for element in grafo:
@@ -124,12 +124,25 @@ while opcion_elegida != 2:
             visitados = []
             bifurcaciones = []
 
-            afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcaciones, ramificaciones)
+            print(f"{bcolors.OKBLUE}-- INICIO ALGORITMO --{bcolors.RESET}")
+            resultado = afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcaciones, ramificaciones)
+            print(f"{bcolors.OKBLUE}-- FIN ALGORITMO --{bcolors.RESET}")
 
-            if any(ramificaciones):
-                print("Resultado: cadena aceptada\n")
-            else:
-                print("Resultado: cadena rechazada\n")
+            # chequeamos si hubo ramificaciones en el AFND, es decir, si se podian tomar distintos caminos con la palabra
+            if ramificaciones:
+                # si hubo ramificaciones, y por lo menos una de ellas es True, la palabra es aceptada por el automata
+                if any(ramificaciones):
+                    print("cadena aceptada\n")
+                else:
+                    print("cadena rechazada\n")
+
+            elif not ramificaciones:
+                # como no hubo ramificaciones, chequeamos el valor que devolvio el automata "resultado" que es el
+                # resultado de haber tomado un solo camino
+                if resultado:
+                    print("cadena aceptada\n")
+                else:
+                    print("cadena rechazada\n")
 
             respuesta = input(f"{bcolors.FAIL}¿Quieres volver a correr el programa? (Si/No): {bcolors.RESET}")
             if respuesta == "si":
