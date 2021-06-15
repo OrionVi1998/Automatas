@@ -5,8 +5,9 @@ from afd import afd
 from afnd import afnd
 
 class bcolors:
-    FAIL = '\033[91m' #RED
-    RESET = '\033[0m' #RESET COLOR
+    FAIL = '\033[91m'
+    RESET = '\033[0m'
+    OKBLUE = '\033[94m'
 
 grafo = {}
 estado_inicial = None
