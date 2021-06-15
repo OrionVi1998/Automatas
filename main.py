@@ -22,6 +22,8 @@ while not valido:
         opcion_elegida = int(input("Ingrese aquí: "))
         if opcion_elegida >= 0 and opcion_elegida <= 2:
             valido = True
+        else:
+            print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
     except:
         print(f"{bcolors.FAIL}ERROR: Seleccione una opción valida.{bcolors.RESET}")
 
