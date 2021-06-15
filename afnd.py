@@ -15,8 +15,6 @@ def afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcacion
         elif not palabra:
             break
 
-        print("estado actual:", estado_actual, "y char:", char)
-
         vecinos = [tupla[0] for tupla in grafo.get(estado_actual) if tupla[1] == char]
         # Si no hay vecinos
         if not vecinos:
@@ -28,12 +26,10 @@ def afnd(grafo, estado_inicial, estados_finales, palabra, visitados, bifurcacion
                 if e not in bifurcaciones:
                     bifurcaciones.append(e)
 
-            print("bifurcaciones por", char, "-->", bifurcaciones)
             for estado in bifurcaciones:
                 print("INICIO RAMIFICACION POR ESTADO:", estado)
                 ramificacion = afnd(grafo, estado, estados_finales, palabra[1:], visitados, bifurcaciones, ramificaciones)
                 ramificaciones.append(ramificacion)
-                print("ramificacion:", ramificacion)
                 print("FIN RAMIFICACION")
 
         else:
